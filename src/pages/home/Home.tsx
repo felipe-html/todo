@@ -44,7 +44,7 @@ export function Home() {
                     <div className={styles.emptyTasks}> 
                         <img src="/Clipboard.svg" alt="" />
                         <strong> Você ainda não tem tarefas cadastradas</strong>
-                        <p>Crie tarefas e organize seus items a fazer</p>
+                        <p>Crie tarefas e organize seus itens a fazer</p>
                     </div>
                     )
                     }
