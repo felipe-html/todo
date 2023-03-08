@@ -1,32 +1,55 @@
+import { useState } from "react";
 import {IoIosAddCircleOutline} from "react-icons/io"
+import { localstorage_tasks_key } from "../../constants";
+import { useTask } from "../../hooks/useTasks";
+import { TaskProps } from "../../types/Task";
+import utils from "../../utils/utils"
 import styles from "./Form.module.scss";
 
-interface FormProps {
-    onCreate: () => void
-    onChange: (value: string) => void
-    value: string
-}
+export function Form() {
+    const {allTasks, setAllTasks} = useTask()
 
-export function Form({onCreate, onChange, value}: FormProps) {
+    const [taskDescription, setTaskDescription] = useState<string>("")
+
+    function handleCreateNewTask() {
+        let tasks = [] as TaskProps[]
+
+        let tasksFromStorage = utils.recoveryFromLocalStorage(localstorage_tasks_key) as TaskProps[]
+
+        if(tasksFromStorage){
+            tasks = [...tasksFromStorage]
+        }
+
+        tasks.push({
+            description: taskDescription,
+            id: allTasks.length === 0 ? 1 : allTasks[allTasks.length - 1].id + 1,
+            isDone: false
+        })
+
+        setAllTasks(tasks)
+        utils.saveIntoLocalStorage(localstorage_tasks_key, tasks)
+        setTaskDescription("")
+    }
+
     return (
         <section className={styles.section}>
             <div className={styles.container}>
                 <div className={styles.inputContainer}>
                     <label htmlFor=""></label>
                     <input 
-                        onChange={(event) => onChange(event.currentTarget.value)} 
-                        value={value} 
+                        onChange={(event) => setTaskDescription(event.currentTarget.value)} 
+                        value={taskDescription} 
                         type="text" 
                         placeholder={"Adicione uma nova tarefa"}
                         onKeyUp={(event) => {
-                            if(event.key === "Enter") onCreate()
+                            if(event.key === "Enter") handleCreateNewTask()
                         }}
                     />
                 </div>
                 <button 
                     className={styles.button} 
                     type="button" 
-                    onClick={onCreate}
+                    onClick={handleCreateNewTask}
                 >
                     <p>Criar</p> 
                     <IoIosAddCircleOutline/>
