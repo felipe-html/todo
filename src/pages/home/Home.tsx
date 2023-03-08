@@ -1,75 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Form } from "../../components/Form/Form";
 import { Header } from "../../components/Header/Header";
 import { Task } from "../../components/Task/Task";
+import { localstorage_tasks_key } from "../../constants";
+import { useTask } from "../../hooks/useTasks";
 import { TaskProps } from "../../types/Task";
+import utils from "../../utils/utils";
 import styles from "./Home.module.scss";
 
 export function Home() {
-    const [newTaskDescription, setNewTaskDescription] = useState<string>("")
-    const [allTasks, setAllTasks] = useState<TaskProps[]>([])
-    const [allTasksDone, setAllTasksDone] = useState<number>(0)
+    const {allTasks, setAllTasks, allTasksDone, countTasksDone} = useTask()
 
-    function handleCreateNewTask() {
-        if(!newTaskDescription || newTaskDescription.replace(/ /g, "") === "") { 
-            setNewTaskDescription("")
-            return
-        }
+    function onLoadScreen() {
+        let tasks = utils.recoveryFromLocalStorage(localstorage_tasks_key) as TaskProps[]
 
-        const newTask = {
-            description: newTaskDescription,
-            isDone: false,
-            id: allTasks.length === 0 ? 1 : allTasks[allTasks.length - 1].id + 1,
-        } as TaskProps
-
-        setAllTasks(oldValue => {
-            return [...oldValue, newTask]
-        })
-
-        setNewTaskDescription("")
+        setAllTasks(tasks ? tasks : [])
+        countTasksDone()
     }
 
-    function handleDeleteTask(taskId: number) {
-        setAllTasks(oldValue => {
-            return oldValue.filter(item => item.id !== taskId)
-        })
-    }
-
-    function handleChangeTaskStatus(taskId: number, status: boolean) {
-        setAllTasks(oldValue => {
-            return oldValue.map(task => {
-                if(task.id === taskId){
-                    return {
-                        ...task,
-                        isDone: status
-                    }
-                } else {
-                    return task
-                }
-            })
-        })
-    }
-
-    function countTasksDone() {
-        let countTasksDone = 0
-
-        allTasks.forEach(task => {
-            task.isDone && countTasksDone ++
-        })
-
-        setAllTasksDone(countTasksDone)
-    }
-
-    useEffect(() => {countTasksDone()}, [allTasks])
+    useEffect(() => {onLoadScreen()},[])
 
     return(
         <main>
             <Header/>
-            <Form
-                onCreate={handleCreateNewTask}
-                onChange={(value) => setNewTaskDescription(value)}
-                value={newTaskDescription}
-            />
+            <Form />
 
             <div className={styles.container}>
                 <div className={styles.tasksStatus}>
@@ -84,8 +38,6 @@ export function Home() {
                                 id={task.id}
                                 description={task.description}
                                 isDone={task.isDone}
-                                onCheck={(value) => handleChangeTaskStatus(task.id, value)}
-                                onDelete={() => handleDeleteTask(task.id)}
                             />
                         ))
                     ) : ( 
