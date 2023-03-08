@@ -1,0 +1,119 @@
+.article {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: var(--gray500);
+    border-radius: 5px;
+    border: solid 1px var(--gray400);
+    transition: background-color .3s;
+    
+    &:hover {
+        background-color: var(--gray600);
+    }
+}
+
+.done {
+    border: solid 1px transparent;
+
+    p {
+        text-decoration: line-through;
+    }
+
+    &:hover {
+        background-color: var(--gray500);
+    }
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.checkboxContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    min-height: 2rem;
+}
+
+.checkbox {
+    position: relative;
+    min-width: 1rem;
+    height: 1rem;
+    cursor: pointer;
+
+    input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+
+        &:checked ~ .checkmark {
+            background-color: var(--purple-dark);
+            border: solid 2px var(--purple-dark);
+        }
+
+        &:checked ~ .checkmark:after {
+            display: block;
+        }
+    }
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1.2rem;
+    width: 1.2rem;
+    border: solid 2px var(--blue-dark);
+    border-radius: 50%;
+    transition: 120ms background-color ease-in-out;
+
+    &:after {
+        content: "";
+        position: absolute;
+        display: none;
+        left: 5px;
+        top: 2px;
+        width: 5px;
+        height: 8px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+}
+
+.icon {
+    display: flex;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    transition: background-color .3s;
+
+    &:hover{
+        cursor: pointer;
+        color: var(--danger);
+        background-color: var(--gray400);
+        border-radius: 5px;
+
+        svg {
+            color: var(--danger);
+        }
+    }
+
+    svg {
+        display: flex;
+        font-size: 1.7rem;
+        color: var(--gray300);
+        transition: color .3s;
+    }
+}

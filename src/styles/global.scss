@@ -1,0 +1,21 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, input, textarea, button {
+    font-family: "Inter", sans-serif;
+    line-height: 140%;
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--gray100);
+}
+
+body {
+    background-color: var(--gray600);
+}
+
+input:focus {
+    outline: solid 1.8px var(--purple);
+}
