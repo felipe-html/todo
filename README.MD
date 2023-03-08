@@ -13,3 +13,5 @@ After this proccess, the following command will start the application in Dev mod
 ```
 yarn dev
 ```
+
+To access a Preview of this application, access the following url: https://my-little-todo.netlify.app/
