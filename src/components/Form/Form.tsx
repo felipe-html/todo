@@ -12,6 +12,11 @@ export function Form() {
     const [taskDescription, setTaskDescription] = useState<string>("")
 
     function handleCreateNewTask() {
+        if(!taskDescription || taskDescription.replace(/ /g, "") === "") { 
+            setTaskDescription("")
+            return
+        }
+
         let tasks = [] as TaskProps[]
 
         let tasksFromStorage = utils.recoveryFromLocalStorage(localstorage_tasks_key) as TaskProps[]
